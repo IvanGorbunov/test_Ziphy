@@ -1,0 +1,52 @@
+def _get_node(tree: dict, parent: str):
+    """Get the node with the given name from the tree"""
+    if parent in tree:
+        return tree[parent]
+    for child in tree.values():
+        result = _get_node(child, parent)
+        if result is not None:
+            return result
+    return None
+
+
+def _add_node(tree: dict, parent: str, child: str):
+    """Add a child node to the parent node in the tree"""
+    if parent is None:
+        tree[child] = {}
+    else:
+        parent_node = _get_node(tree, parent)
+        if parent_node is not None:
+            parent_node[child] = {}
+
+
+def to_tree(pairs: list) -> dict:
+    """Convert a list of pairs to a dictionary representation of the tree"""
+    tree = {}
+    for parent, child in pairs:
+        _add_node(tree, parent, child)
+    return tree
+
+
+if __name__ == "__main__":
+    source = [
+        (None, "a"),
+        (None, "b"),
+        (None, "c"),
+        ("a", "a1"),
+        ("a", "a2"),
+        ("a2", "a21"),
+        ("a2", "a22"),
+        ("b", "b1"),
+        ("b1", "b11"),
+        ("b11", "b111"),
+        ("b", "b2"),
+        ("c", "c1"),
+    ]
+
+    expected = {
+        "a": {"a1": {}, "a2": {"a21": {}, "a22": {}}},
+        "b": {"b1": {"b11": {"b111": {}}}, "b2": {}},
+        "c": {"c1": {}},
+    }
+
+    assert to_tree(source) == expected
