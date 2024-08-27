@@ -29,3 +29,20 @@ expected = {
 
 assert to_tree(source) == expected
 ```
+
+### 1. Запуск:
+
+```bash
+python ./main.py
+```
+
+### 2. Запуск тестов:
+
+```bash
+python -m venv venv
+source venv/bin/activate
+python -m pip install --upgrade pip
+pip install poetry
+poetry install
+poetry run pytest --cov=main --cov-report=html tests/
+```
