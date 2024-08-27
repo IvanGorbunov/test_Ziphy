@@ -4,6 +4,12 @@ class TreeReferenceError(Exception):
     pass
 
 
+class HangingNodesError(Exception):
+    """Exception raised when there are nodes that cannot be integrated into the tree."""
+
+    pass
+
+
 def _get_node(tree: dict, parent: str):
     """Get the node with the given name from the tree"""
     if parent in tree:
@@ -39,15 +45,22 @@ def to_tree(pairs: list) -> dict:
     remaining_pairs = pairs.copy()
 
     while remaining_pairs:
+        is_added = False
         for pair in remaining_pairs[:]:
             parent, child = pair
             try:
                 _add_node(tree, parent, child, added_nodes)
                 remaining_pairs.remove(pair)
+                is_added = True
             except TreeReferenceError:
                 raise
             except ValueError:
                 continue
+        if not is_added:
+            break
+
+    if remaining_pairs:
+        raise HangingNodesError(f"Nodes that do not fit into the tree: {remaining_pairs}.")
 
     return tree
 

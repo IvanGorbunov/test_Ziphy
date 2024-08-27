@@ -72,7 +72,7 @@ def test_data_3():
 
 
 @pytest.fixture
-def test_data_with_error():
+def test_data_with_error_1():
     source = [
         (None, "a"),
         (None, "b"),
@@ -81,5 +81,34 @@ def test_data_with_error():
     ]
 
     expected_error_message = "Node 'c' is already referenced in the tree."
+
+    return source, expected_error_message
+
+
+@pytest.fixture
+def test_data_with_error_2():
+    source = [
+        (None, "a"),
+        (None, "b"),
+        ("a", "c"),
+        ("b", "d"),
+        ("d", "e"),
+        ("c", "e"),
+    ]
+
+    expected_error_message = "Node 'e' is already referenced in the tree."
+
+    return source, expected_error_message
+
+
+@pytest.fixture
+def test_data_with_error_3():
+    source = [
+        (None, "a"),
+        (None, "b"),
+        ("c", "d"),
+    ]
+
+    expected_error_message = "Nodes that do not fit into the tree: [('c', 'd')]."
 
     return source, expected_error_message
