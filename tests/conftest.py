@@ -29,7 +29,7 @@ def test_data_1():
 
 @pytest.fixture
 def test_data_2():
-    source2 = [
+    source = [
         (None, "a"),
         ("b11", "b111"),
         ("a", "a1"),
@@ -44,10 +44,42 @@ def test_data_2():
         ("c", "c1"),
     ]
 
-    expected2 = {
+    expected = {
         "a": {"a1": {}, "a2": {"a21": {}, "a22": {}}},
         "b": {"b1": {"b11": {"b111": {}}}, "b2": {}},
         "c": {"c1": {}},
     }
 
-    return source2, expected2
+    return source, expected
+
+
+@pytest.fixture
+def test_data_3():
+    source = [
+        (None, "a"),
+        (None, "b"),
+        ("b", "c"),
+        ("c", "d"),
+        ("a", "e"),
+    ]
+
+    expected = {
+        "a": {"e": {}},
+        "b": {"c": {"d": {}}},
+    }
+
+    return source, expected
+
+
+@pytest.fixture
+def test_data_with_error():
+    source = [
+        (None, "a"),
+        (None, "b"),
+        ("a", "c"),
+        ("b", "c"),
+    ]
+
+    expected_error_message = "Node 'c' is already referenced in the tree."
+
+    return source, expected_error_message
