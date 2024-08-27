@@ -17,13 +17,24 @@ def _add_node(tree: dict, parent: str, child: str):
         parent_node = _get_node(tree, parent)
         if parent_node is not None:
             parent_node[child] = {}
+        else:
+            raise ValueError(f"Parent node '{parent}' not found in the tree.")
 
 
 def to_tree(pairs: list) -> dict:
     """Convert a list of pairs to a dictionary representation of the tree"""
     tree = {}
-    for parent, child in pairs:
-        _add_node(tree, parent, child)
+    remaining_pairs = pairs.copy()
+
+    while remaining_pairs:
+        for pair in remaining_pairs[:]:
+            parent, child = pair
+            try:
+                _add_node(tree, parent, child)
+                remaining_pairs.remove(pair)
+            except ValueError:
+                continue
+
     return tree
 
 
